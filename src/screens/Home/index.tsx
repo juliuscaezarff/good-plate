@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, Image, Text, ScrollView, Alert } from "react-native";
 import * as ImagePicker from 'expo-image-picker'
 import * as ImageManipulator from 'expo-image-manipulator'
+import { api } from "../../services/api";
 
 import { styles } from "./styles";
 
@@ -11,6 +12,7 @@ import { Item } from "../../components/Item";
 
 export function Home() {
   const [selectedImageUri, setselectedImageUri] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
 
   async function handleSelectImage() {
     try {
@@ -20,6 +22,8 @@ export function Home() {
         return Alert.alert('É necessário conceder permissão para acessar seu álbum')
       }
 
+      setIsLoading(true)
+
       const response = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
@@ -28,7 +32,7 @@ export function Home() {
       })
 
       if(response.canceled) {
-        return;
+        return setIsLoading(false)
       }
 
       // Manipulando a imagem para o envio na API
@@ -44,6 +48,7 @@ export function Home() {
         )
 
         setselectedImageUri(imgManipuled.uri)
+        foodDetect(imgManipuled.base64)
       }
 
     } catch (error) {
@@ -51,9 +56,30 @@ export function Home() {
     }
   }
 
+  async function foodDetect(imageBase64: string | undefined ) {
+    const response = await api.post(`/v2/models/${process.env.EXPO_PUBLIC_API_MODEL_ID}/versions/${process.env.EXPO_PUBLIC_API_MODEL_VERSION_ID}/outputs`, {
+      'user_app_id': {
+        'user_id': process.env.EXPO_PUBLIC_ID_USER_ID,
+        'app_id': process.env.EXPO_PUBLIC_API_APP_ID
+      },
+      'inputs': [
+        {
+          'data': {
+            'image': {
+              'base64': imageBase64
+            }
+          }
+        }
+      ]
+    })
+
+    console.log(response)
+    setIsLoading(false)
+  }
+
   return (
     <View style={styles.container}>
-      <Button onPress={handleSelectImage}/>
+      <Button onPress={handleSelectImage} disabled={isLoading}/>
 
       {
         selectedImageUri ?
