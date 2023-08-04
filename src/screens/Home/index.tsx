@@ -1,7 +1,8 @@
-import { View, Image, Text } from "react-native";
+import { View, Image, Text, ScrollView } from "react-native";
 import { styles } from "./styles";
 import Button from "../../components/Button";
 import { useState } from "react";
+import { Tip } from "../../components/Tip";
 
 export default function Home() {
   const [selectedImageUri, setselectedImageUri] = useState('');
@@ -26,6 +27,16 @@ export default function Home() {
           Selecione a foto do seu prato para analizar
         </Text>
       }
+
+      <View style={styles.bottom}>
+        <Tip message="Aqui vai uma dica"/>
+
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 24 }}>
+          <View style={styles.items}>
+
+          </View>
+        </ScrollView>
+      </View>
     </View>
   )
 }
