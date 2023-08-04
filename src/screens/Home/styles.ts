@@ -13,6 +13,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     textAlignVertical: 'center'
   },
+  bottom: {
+    flex: 1,
+    backgroundColor: '#D9D9D9',
+    borderBottomLeftRadius: 32,
+    borderTopRightRadius: 32,
+    paddingHorizontal: 24,
+    marginTop: -42,
+    paddingTop: 12
+  },
+  items: {
+    flex: 1,
+    gap: 12
+  },
   image: {
     flex: 1
   }
