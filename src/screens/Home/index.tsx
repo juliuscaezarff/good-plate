@@ -1,15 +1,54 @@
-import { View, Image, Text, ScrollView } from "react-native";
-import { styles } from "./styles";
-import Button from "../../components/Button";
 import { useState } from "react";
-import { Tip } from "../../components/Tip";
-import Item from "../../components/Item";
+import { View, Image, Text, ScrollView, Alert } from "react-native";
+import * as ImagePicker from 'expo-image-picker'
+import * as ImageManipulator from 'expo-image-manipulator'
 
-export default function Home() {
+import { styles } from "./styles";
+
+import { Tip } from "../../components/Tip";
+import { Button } from "../../components/Button";
+import { Item } from "../../components/Item";
+
+export function Home() {
   const [selectedImageUri, setselectedImageUri] = useState('');
 
   async function handleSelectImage() {
-    
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+      if(status !== ImagePicker.PermissionStatus.GRANTED) {
+        return Alert.alert('É necessário conceder permissão para acessar seu álbum')
+      }
+
+      const response = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1,
+      })
+
+      if(response.canceled) {
+        return;
+      }
+
+      // Manipulando a imagem para o envio na API
+      if(!response.canceled) {
+        const imgManipuled = await ImageManipulator.manipulateAsync(
+          response.assets[0].uri,
+          [{ resize: {width: 900} }],
+          {
+            compress: 1,
+            format: ImageManipulator.SaveFormat.JPEG,
+            base64: true
+          }
+        )
+
+        setselectedImageUri(imgManipuled.uri)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
