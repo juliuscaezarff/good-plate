@@ -3,6 +3,7 @@ import { styles } from "./styles";
 import Button from "../../components/Button";
 import { useState } from "react";
 import { Tip } from "../../components/Tip";
+import Item from "../../components/Item";
 
 export default function Home() {
   const [selectedImageUri, setselectedImageUri] = useState('');
@@ -33,7 +34,7 @@ export default function Home() {
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingVertical: 24 }}>
           <View style={styles.items}>
-
+            <Item data={{ name: 'Vegetal', percentage: '95%' }}/>
           </View>
         </ScrollView>
       </View>
