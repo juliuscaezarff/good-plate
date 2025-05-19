@@ -2,7 +2,7 @@ import { TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { styles } from './styles'
 
-export default function Button({ ...rest }: TouchableOpacityProps) {
+export function Button({ ...rest }: TouchableOpacityProps) {
   return (
     <TouchableOpacity 
       activeOpacity={0.7} 

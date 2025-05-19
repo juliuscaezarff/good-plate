@@ -12,7 +12,7 @@ type Props = {
 }
 
 
-export default function Item({ data }: Props) {
+export function Item({ data }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.percentage}>
