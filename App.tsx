@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { useFonts, Poppins_400Regular, Poppins_700Bold } from '@expo-google-fonts/poppins';
 
-import Home from './src/screens/Home';
-import Loading from './src/components/Loading';
+import { Recognition } from './src/screens/Recognition';
+import { Loading } from './src/components/Loading';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,7 +21,7 @@ export default function App() {
       translucent
      />
 
-     <Home />
+     <Recognition />
     </>
   );
 }
